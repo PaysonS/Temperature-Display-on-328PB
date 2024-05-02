@@ -9,6 +9,7 @@
 #include "MPU6050_def.h"							/* Include MPU6050 register define file */
 #include "i2c_master.h"							/* Include I2C Master header file */
 #include "uart.h"							/* Include USART header file */
+#include "lcd.h"
 
 float Acc_x,Acc_y,Acc_z,Temperature,Gyro_x,Gyro_y,Gyro_z;
 
@@ -93,6 +94,20 @@ int main()
 	 PORTC |= (1 << PORTC3);  // Enable pull-up resistor
 	
 	int val = 0;
+	
+lcd_init(LCD_DISP_ON);
+lcd_clrscr();
+lcd_set_contrast(0x00);
+lcd_gotoxy(4,1);
+lcd_charMode(DOUBLESIZE);
+lcd_gotoxy(0,4);
+
+
+
+#ifdef GRAPHICMODE
+lcd_display();
+#endif
+	
 	while(1)
 	{
 		Read_RawValue();
@@ -116,20 +131,32 @@ int main()
 			OCR1A = 100;						//guessed number for "Cold!"
 		}
 		
-		if(!(PINC & (1<<PINC1))){
+		while(!(PINC & (1<<PINC1))){
 			OCR1A = 100;
-			_delay_ms(1000);
+			t = 50;
+			//_delay_ms(1000);
 		}
-		if(!(PINC & (1<<PINC2))){
+		while(!(PINC & (1<<PINC2))){
 			OCR1A = 200;
-			_delay_ms(1000);
+			t = 60;
+			//_delay_ms(1000);
 		}
-		if(!(PINC & (1<<PINC3))){
+		while(!(PINC & (1<<PINC3))){
 			OCR1A = 350;
-			_delay_ms(1000);
+			t= 80;
+		//	_delay_ms(1000);
 		}
 		
+
+		
+		
 		val = OCR1A;
+		lcd_clrscr();
+		lcd_puts("  Temp  \r\n");
+		 lcd_puts(float_);  // put string from RAM to display (TEXTMODE) or buffer (GRAPHICMODE)
+		 _delay_ms(1000);
+		 //lcd_gotoxy(0,2);
+		 
 		
 	}
 }
