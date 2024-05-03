@@ -122,40 +122,37 @@ lcd_display();
 		
 		//OCR1A
 		if(t > 90){
-			OCR1A = 490;						//guessed number for "very hot"
+			OCR1A = 430;						//guessed number for "very hot"
 		} else if(t > 70 && t < 90){
 			OCR1A = 350;						//guessed number for "hot"
 		}else if(t > 50 && t < 70){
-			OCR1A =  200;						//guessed number for "Nice"
+			OCR1A =  285;						//guessed number for "Nice"
 		}else if(t < 50){
-			OCR1A = 100;						//guessed number for "Cold!"
+			OCR1A = 200;						//guessed number for "Cold!"
 		}
 		
-		while(!(PINC & (1<<PINC1))){
-			OCR1A = 100;
+		while(!(PINC & (1<<PINC1))){			//manually sets servo to different temp area
+			OCR1A = 200;			
 			t = 50;
-			//_delay_ms(1000);
 		}
 		while(!(PINC & (1<<PINC2))){
-			OCR1A = 200;
+			OCR1A = 285;
 			t = 60;
-			//_delay_ms(1000);
 		}
 		while(!(PINC & (1<<PINC3))){
 			OCR1A = 350;
 			t= 80;
-		//	_delay_ms(1000);
 		}
 		
 
 		
 		
 		val = OCR1A;
-		lcd_clrscr();
+		lcd_clrscr();						
 		lcd_puts("  Temp  \r\n");
-		 lcd_puts(float_);  // put string from RAM to display (TEXTMODE) or buffer (GRAPHICMODE)
+		 lcd_puts(float_);						// put string from RAM to display (TEXTMODE) or buffer (GRAPHICMODE)
 		 _delay_ms(1000);
-		 //lcd_gotoxy(0,2);
+	
 		 
 		
 	}
